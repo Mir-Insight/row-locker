@@ -72,10 +72,10 @@ class RowLockerBehavior extends Behavior
      * `lockingSession`.
      *
      * @param Query $quert The Query to modify
-     * @param array|ArrayObject $options The options containing the `lockingUser` key
+     * @param ArrayObject|array $options The options containing the `lockingUser` key
      * @return Query
      */
-    public function findAutoLock(Query $query, $options): Query
+    public function findAutoLock(Query $query, ArrayObject|array $options): Query
     {
         $by = Hash::get($options, 'lockingUser');
         $session = Hash::get($options, 'lockingSession');
@@ -85,9 +85,9 @@ class RowLockerBehavior extends Behavior
                 ->filter(function ($r) {
                     return $r instanceof LockableInterface;
                 })
-                ->each(function ($r) use ($by, $session) {
+                ->each(function ($r) use ($by, $session): void {
                     $r->lock($by, $session);
-                    $this->_table->save($r);
+                    $this->table()->save($r);
                 });
 
             return $results;
@@ -106,7 +106,7 @@ class RowLockerBehavior extends Behavior
     {
         return function ($callback) {
             $connection = $this->table()->getConnection();
-            $level = str_replace('-', ' ', $connection->selectQuery('session.tx_isolation')->all()[0][0]);
+            $level = str_replace('-', ' ', $connection->execute('SELECT @@session.tx_isolation')->fetchAll()[0][0]);
             $connection->execute('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE')->closeCursor();
 
             try {
