@@ -106,7 +106,7 @@ class RowLockerBehavior extends Behavior
     {
         return function ($callback) {
             $connection = $this->table()->getConnection();
-            $level = str_replace('-', ' ', $connection->selectQuery('@@session.tx_isolation')->all()[0][0]);
+            $level = str_replace('-', ' ', $connection->selectQuery('session.tx_isolation')->all()[0][0]);
             $connection->execute('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE')->closeCursor();
 
             try {
