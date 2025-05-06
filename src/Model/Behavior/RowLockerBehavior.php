@@ -89,7 +89,7 @@ class RowLockerBehavior extends Behavior
                     $r->lock($by, $session);
                     $this->_table->save($r);
                 });
-            
+
             return $results;
         });
     }
@@ -105,8 +105,8 @@ class RowLockerBehavior extends Behavior
     public function lockingMonitor(): callable
     {
         return function ($callback) {
-            $connection = $this->_table->connection();
-            $level = str_replace('-', ' ', $connection->query('SELECT @@session.tx_isolation')->fetchAll()[0][0]);
+            $connection = $this->table()->getConnection();
+            $level = str_replace('-', ' ', $connection->selectQuery('@@session.tx_isolation')->all()[0][0]);
             $connection->execute('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE')->closeCursor();
 
             try {

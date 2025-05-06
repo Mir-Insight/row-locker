@@ -3,7 +3,7 @@
     "description": "Plugin to lock database rows using the CakePHP ORM",
     "type": "cakephp-plugin",
     "license": "MIT",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "require": {
         "php": "^8.1",
         "cakephp/orm": "^4.0|^5.0"
