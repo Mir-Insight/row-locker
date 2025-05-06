@@ -12,7 +12,7 @@ the users from possible data overwrite.
 You can install this plugin into your CakePHP application using [composer](http://getcomposer.org).
 
 ```
-composer require lorenzo/row-locker
+composer require mir-insight/row-locker
 ```
 
 **Note:** Above will install package compactible with CakePHP4. Please refer to [Versions section](https://github.com/lorenzo/row-locker#versions) to install package with CakePHP3.
