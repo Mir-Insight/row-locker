@@ -8,14 +8,15 @@ use Cake\Database\TypeFactory;
  */
 trait LockableTrait
 {
-    protected static $lockTimeout = 300;
+    protected static int $lockTimeout = 300;
 
     /**
      * {@inheritDoc}
      *
      * @return void
+     * @throws LockingException
      */
-    public function lock($by = null, $session = null)
+    public function lock($by = null, $session = null): void
     {
         if ($this->isLocked() && $by !== $this->lockOwner()) {
             throw new LockingException('This entity is already locked');
@@ -36,12 +37,12 @@ trait LockableTrait
      *
      * @return void
      */
-    public function unlock()
+    public function unlock(): void
     {
         $this->set([
             'locked_by' => null,
             'locked_session' => null,
-            'locked_time' => null
+            'locked_time' => null,
         ]);
     }
 
@@ -50,7 +51,7 @@ trait LockableTrait
      *
      * @return bool
      */
-    public function isLocked()
+    public function isLocked(): bool
     {
         $now = time();
         $locked = $this->get('locked_time');
@@ -64,7 +65,7 @@ trait LockableTrait
      *
      * @return string|null
      */
-    public function lockOwner()
+    public function lockOwner(): ?string
     {
         return $this->get('locked_by');
     }
@@ -74,7 +75,7 @@ trait LockableTrait
      *
      * @return string|null
      */
-    public function lockSession()
+    public function lockSession(): ?string
     {
         return $this->get('locked_session');
     }
@@ -84,7 +85,7 @@ trait LockableTrait
      *
      * @return void
      */
-    public static function setLockTimeout($seconds)
+    public static function setLockTimeout($seconds): void
     {
         static::$lockTimeout = (int)$seconds;
     }
@@ -94,7 +95,7 @@ trait LockableTrait
      *
      * @return int
      */
-    public static function getLockTimeout()
+    public static function getLockTimeout(): int
     {
         return static::$lockTimeout;
     }

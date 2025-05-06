@@ -1,6 +1,7 @@
 <?php
 namespace RowLocker\Model\Behavior;
 
+use ArrayObject;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
 use Cake\Utility\Hash;
@@ -18,7 +19,7 @@ class RowLockerBehavior extends Behavior
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'locked_time' => 'locked_time',
         'locked_session' => 'locked_session',
         'locked_by' => 'locked_by',
@@ -88,6 +89,7 @@ class RowLockerBehavior extends Behavior
                     $r->lock($by, $session);
                     $this->_table->save($r);
                 });
+            
             return $results;
         });
     }
